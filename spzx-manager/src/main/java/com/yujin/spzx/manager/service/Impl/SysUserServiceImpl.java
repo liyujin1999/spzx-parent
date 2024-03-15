@@ -11,6 +11,7 @@ import com.yujin.spzx.model.vo.common.ResultCodeEnum;
 import com.yujin.spzx.model.vo.system.LoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -64,5 +65,12 @@ public class SysUserServiceImpl implements SysUserService {
 
         // 返回
         return loginVo;
+    }
+    //获取当前登录的用户信息
+    @Override
+    public SysUser getUserInfo(String token) {
+        String userJson = redisTemplate.opsForValue().get("user:login:" + token);
+        SysUser sysUser = JSON.parseObject(userJson, SysUser.class);
+        return sysUser;
     }
 }

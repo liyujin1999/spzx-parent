@@ -5,6 +5,7 @@ package com.yujin.spzx.manager.controller;
 import com.yujin.spzx.manager.service.SysUserService;
 import com.yujin.spzx.manager.service.ValidateCodeService;
 import com.yujin.spzx.model.dto.system.LoginDto;
+import com.yujin.spzx.model.entity.system.SysUser;
 import com.yujin.spzx.model.vo.common.Result;
 import com.yujin.spzx.model.vo.common.ResultCodeEnum;
 import com.yujin.spzx.model.vo.system.LoginVo;
@@ -23,7 +24,15 @@ public class IndexController {
     private SysUserService sysUserService;
     @Autowired
     private ValidateCodeService validateCodeService;
-
+    //获取当前登录的用户信息
+    @GetMapping(value = "/getUserInfo")
+    public Result<SysUser> getUserInfo(@RequestHeader(name = "token") String token) {
+        System.out.println(token);
+        //根据token查redis中信息
+        SysUser sysUser = sysUserService.getUserInfo(token) ;
+        System.out.println(sysUser);
+        return Result.build(sysUser , ResultCodeEnum.SUCCESS) ;
+    }
     //生成验证码
     @GetMapping("/generateValidateCode")
     public Result<ValidateCodeVo> generateValidateCode(){
