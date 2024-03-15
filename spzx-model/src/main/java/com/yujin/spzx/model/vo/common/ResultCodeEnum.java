@@ -9,6 +9,7 @@ public enum ResultCodeEnum {
     LOGIN_ERROR01(2001 , "用户名不存在"),
     LOGIN_ERROR02(2002 , "密码错误"),
     VALIDATECODE_ERROR(202 , "验证码错误") ,
+    VALIDATECODE_TIMEOUT(203 , "验证码过期") ,
     LOGIN_AUTH(208 , "用户未登录"),
     USER_NAME_IS_EXISTS(209 , "用户名已经存在"),
     SYSTEM_ERROR(9999 , "您的网络有问题请稍后重试"),

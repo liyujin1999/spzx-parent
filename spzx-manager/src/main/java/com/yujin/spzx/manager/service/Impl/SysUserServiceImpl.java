@@ -1,5 +1,6 @@
 package com.yujin.spzx.manager.service.Impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.yujin.spzx.common.exception.CustomException;
 import com.yujin.spzx.manager.mapper.SysUserMapper;
@@ -27,6 +28,19 @@ public class SysUserServiceImpl implements SysUserService {
     //用户登录
     @Override
     public LoginVo login(LoginDto loginDto) {
+        // 校验验证码是否正确
+        String captcha = loginDto.getCaptcha();     // 用户输入的验证码
+        String codeKey = loginDto.getCodeKey();     // redis中验证码的数据key
+        // 从Redis中获取验证码
+        String redisCode = redisTemplate.opsForValue().get("user:validate" + codeKey);
+        if(StrUtil.isEmpty(redisCode)) {
+            throw new CustomException(ResultCodeEnum.VALIDATECODE_TIMEOUT) ;
+        }
+        if(!StrUtil.equalsIgnoreCase(redisCode , captcha)) {
+            throw new CustomException(ResultCodeEnum.VALIDATECODE_ERROR) ;
+        }
+        // 验证通过删除redis中的验证码
+        redisTemplate.delete("user:validate" + codeKey) ;
         // 根据用户名查询用户
         String userName = loginDto.getUserName();
         SysUser sysUser = sysUserMapper.selectByUserName(userName);
