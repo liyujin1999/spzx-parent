@@ -6,3 +6,7 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+../spzx-common/common-service/target/
+../spzx-common/common-util/target/
+../spzx-manager/target/
+../spzx-model/target/
