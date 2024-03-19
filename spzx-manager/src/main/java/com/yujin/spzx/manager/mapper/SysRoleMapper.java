@@ -14,4 +14,7 @@ public interface SysRoleMapper {
     void saveSysRole(SysRole sysRole);
     //角色修改的方法
     void updateSysRole(SysRole sysRole);
+    //角色删除的方法
+    void deleteById(Long roleId);
+
 }
