@@ -24,7 +24,7 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
         String code = circleCaptcha.getCode();//获取验证码
         String imageBase64 = circleCaptcha.getImageBase64();//返回图片验证码，base64编码
         String key = UUID.randomUUID().toString().replaceAll("-", "");
-        redisTemplate.opsForValue().set("user:validate"+key, code, 10, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set("user:validate"+key, code, 20, TimeUnit.SECONDS);
         //返回ValidateCodeVo对象
         ValidateCodeVo validateCodeVo = new ValidateCodeVo();
         validateCodeVo.setCodeKey(key);
