@@ -12,4 +12,6 @@ public interface SysRoleMapper {
     List<SysRole> findByPage(SysRoleDto sysRoleDto);
     //角色添加的方法
     void saveSysRole(SysRole sysRole);
+    //角色修改的方法
+    void updateSysRole(SysRole sysRole);
 }
