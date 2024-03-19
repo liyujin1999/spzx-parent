@@ -15,11 +15,17 @@ import java.util.List;
 public class SysRoleServiceImpl implements SysRoleService {
     @Autowired
     private SysRoleMapper sysRoleMapper;
+    //角色列表的方法
     @Override
     public PageInfo<SysRole> findByPage(SysRoleDto sysRoleDto, Integer current, Integer limit){
         PageHelper.startPage(current, limit);
         List<SysRole> sysRoleList = sysRoleMapper.findByPage(sysRoleDto);
         PageInfo<SysRole> pageInfo = new PageInfo<>(sysRoleList);
         return pageInfo;
+    }
+    //角色添加的方法
+    @Override
+    public void saveSysRole(SysRole sysRole) {
+        sysRoleMapper.saveSysRole(sysRole);
     }
 }
