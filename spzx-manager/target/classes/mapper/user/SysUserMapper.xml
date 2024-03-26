@@ -4,4 +4,86 @@
     <select id="selectByUserName" resultType="com.yujin.spzx.model.entity.system.SysUser">
         select id,username userName ,password,name,phone,avatar,description,status,create_time,update_time,is_deleted from sys_user where username = #{userName}
     </select>
+
+<!--    用户列表分页查询-->
+    <select id="findByPage" resultType="com.yujin.spzx.model.entity.system.SysUser">
+        select id,username userName ,password,name,phone,avatar,description,status,create_time,update_time,is_deleted
+        from sys_user
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and username like CONCAT('%',#{keyword},'%')
+            </if>
+            <if test="createTimeBegin != null and createTimeBegin != ''">
+                and create_time >= #{createTimeBegin}
+            </if>
+            <if test="createTimeEnd != null and createTimeEnd != ''">
+                and create_time &lt;= #{createTimeEnd}
+            </if>
+            and is_deleted = 0
+        </where>
+    </select>
+
+<!--    用户添加-->
+    <insert id="saveSysUser">
+        insert into sys_user(
+            id,
+            username,
+            password,
+            name,
+            phone,
+            avatar,
+            description,
+            status
+        ) values(
+            #{id},
+            #{userName},
+            #{password},
+            #{name},
+            #{phone},
+            #{avatar},
+            #{description},
+            #{status}
+        )
+    </insert>
+
+<!--    根据用户名查询用户是否存在-->
+    <select id="findByName" resultType="com.yujin.spzx.model.entity.system.SysUser">
+        select * from sys_user
+                 where name = #{name} and is_deleted = 0
+    </select>
+
+<!--    修改用户-->
+    <update id="updateSysUser">
+        update sys_user set
+        <if test="userName != null and userName != ''">
+            username = #{userName},
+        </if>
+        <if test="password != null and password != ''">
+            password = #{password},
+        </if>
+        <if test="name != null and name != ''">
+            name = #{name},
+        </if>
+        <if test="phone != null and phone != ''">
+            phone = #{phone},
+        </if>
+        <if test="description != null and description != ''">
+            description = #{description},
+        </if>
+        <if test="status != null and status != ''">
+            status = #{status},
+        </if>
+        update_time =  now()
+        where
+        id = #{id}
+    </update>
+
+<!--    逻辑删除-->
+    <update id="deleteById">
+        update sys_user set
+            update_time = now() ,
+            is_deleted = 1
+        where
+            id = #{userId}
+    </update>
 </mapper>

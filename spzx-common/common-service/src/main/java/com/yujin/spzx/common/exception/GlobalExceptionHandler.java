@@ -11,6 +11,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public Result error(Exception e){
+        e.printStackTrace();
         return Result.build(null, 201, "出现异常了");
     }
 

@@ -2,10 +2,13 @@ package com.yujin.spzx.manager.service.Impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yujin.spzx.common.exception.CustomException;
 import com.yujin.spzx.manager.mapper.SysUserMapper;
 import com.yujin.spzx.manager.service.SysUserService;
 import com.yujin.spzx.model.dto.system.LoginDto;
+import com.yujin.spzx.model.dto.system.SysUserDto;
 import com.yujin.spzx.model.entity.system.SysUser;
 import com.yujin.spzx.model.vo.common.ResultCodeEnum;
 import com.yujin.spzx.model.vo.system.LoginVo;
@@ -15,6 +18,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -77,5 +81,43 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public void logout(String token) {
         redisTemplate.delete("user:login:" + token);
+    }
+    //用户列表分页查询
+    @Override
+    public PageInfo<SysUser> findByPage(SysUserDto sysUserDto, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<SysUser> list = sysUserMapper.findByPage(sysUserDto);
+        PageInfo<SysUser> pageInfo = new PageInfo<>(list);
+        return pageInfo;
+    }
+    //用户添加
+    @Override
+    public void saveSysUser(SysUser sysUser) {
+        //判断用户名是否存在
+        SysUser user = sysUserMapper.findByName(sysUser.getName());
+        if(user != null){
+            throw new CustomException(ResultCodeEnum.USER_NAME_IS_EXISTS);
+        }
+        //对输入密码进行加密处理
+        String password = sysUser.getPassword();
+        String md5_passwd = DigestUtils.md5DigestAsHex(password.getBytes());
+        sysUser.setPassword(md5_passwd);
+        sysUser.setStatus(1);//代表可用
+        sysUserMapper.saveSysUser(sysUser);
+    }
+    //用户修改
+    @Override
+    public void updateSysUser(SysUser sysUser) {
+        //判断用户名是否存在
+        SysUser user = sysUserMapper.findByName(sysUser.getUserName());
+        if(user != null){
+            throw new CustomException(ResultCodeEnum.USER_NAME_IS_EXISTS);
+        }
+        sysUserMapper.updateSysUser(sysUser);
+    }
+    //删除接口
+    @Override
+    public void deleteById(Integer userId) {
+        sysUserMapper.deleteById(userId);
     }
 }
