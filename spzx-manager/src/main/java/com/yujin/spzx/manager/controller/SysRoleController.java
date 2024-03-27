@@ -9,6 +9,8 @@ import com.yujin.spzx.model.vo.common.ResultCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping(value = "/admin/system/sysRole")
 public class SysRoleController {
@@ -41,5 +43,12 @@ public class SysRoleController {
     public Result deleteById(@PathVariable("roleId") Long roleId){
         sysRoleService.deleteById(roleId);
         return  Result.build(null, ResultCodeEnum.SUCCESS);
+    }
+
+    //查询所有角色
+    @GetMapping("/findAllRoles/{userId}")
+    public Result findAllRoles(@PathVariable("userId") Long userId){
+        Map<String, Object> map = sysRoleService.findAllRoles(userId);
+        return Result.build(map, ResultCodeEnum.SUCCESS);
     }
 }

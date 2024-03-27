@@ -31,4 +31,11 @@
     <update id="deleteById">
         update sys_role set is_deleted=1 where  id=#{roleId}
     </update>
+<!--    查询所有角色-->
+    <select id="findAllRoles" resultType="com.yujin.spzx.model.entity.system.SysRole">
+        select id,role_name,role_code,description,create_time,update_time,is_deleted
+        from sys_role
+        where is_deleted = 0
+
+    </select>
 </mapper>

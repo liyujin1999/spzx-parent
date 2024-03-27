@@ -5,6 +5,7 @@ import com.yujin.spzx.model.entity.system.SysRole;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SysRoleMapper {
@@ -16,5 +17,6 @@ public interface SysRoleMapper {
     void updateSysRole(SysRole sysRole);
     //角色删除的方法
     void deleteById(Long roleId);
-
+    //查询所有角色
+    List<SysRole> findAllRoles();
 }

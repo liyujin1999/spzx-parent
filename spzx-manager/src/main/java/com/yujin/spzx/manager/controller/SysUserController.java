@@ -3,6 +3,7 @@ package com.yujin.spzx.manager.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.yujin.spzx.manager.service.SysUserService;
+import com.yujin.spzx.model.dto.system.AssginRoleDto;
 import com.yujin.spzx.model.dto.system.SysUserDto;
 import com.yujin.spzx.model.entity.system.SysUser;
 import com.yujin.spzx.model.vo.common.Result;
@@ -44,6 +45,12 @@ public class SysUserController {
     @DeleteMapping("/deleteById/{userId}")
     public Result deleteById(@PathVariable("userId") Integer userId){
         sysUserService.deleteById(userId);
+        return Result.build(null, ResultCodeEnum.SUCCESS);
+    }
+    //为用户保存分配的角色
+    @PostMapping("/doAssign")
+    public Result doAssign(@RequestBody AssginRoleDto assginRoleDto){
+        sysUserService.doAssign(assginRoleDto);
         return Result.build(null, ResultCodeEnum.SUCCESS);
     }
 }

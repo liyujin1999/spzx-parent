@@ -1,6 +1,7 @@
 package com.yujin.spzx.manager.service;
 
 import com.github.pagehelper.PageInfo;
+import com.yujin.spzx.model.dto.system.AssginRoleDto;
 import com.yujin.spzx.model.dto.system.LoginDto;
 import com.yujin.spzx.model.dto.system.SysUserDto;
 import com.yujin.spzx.model.entity.system.SysUser;
@@ -23,4 +24,6 @@ public interface SysUserService {
     void updateSysUser(SysUser sysUser);
     //删除接口
     void deleteById(Integer userId);
+    //为用户保存分配的角色
+    void doAssign(AssginRoleDto assginRoleDto);
 }

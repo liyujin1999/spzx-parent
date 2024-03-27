@@ -5,8 +5,10 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yujin.spzx.common.exception.CustomException;
+import com.yujin.spzx.manager.mapper.SysRoleUserMapper;
 import com.yujin.spzx.manager.mapper.SysUserMapper;
 import com.yujin.spzx.manager.service.SysUserService;
+import com.yujin.spzx.model.dto.system.AssginRoleDto;
 import com.yujin.spzx.model.dto.system.LoginDto;
 import com.yujin.spzx.model.dto.system.SysUserDto;
 import com.yujin.spzx.model.entity.system.SysUser;
@@ -30,6 +32,8 @@ public class SysUserServiceImpl implements SysUserService {
     private SysUserMapper sysUserMapper;
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private SysRoleUserMapper sysRoleUserMapper;
     //用户登录
     @Override
     public LoginVo login(LoginDto loginDto) {
@@ -119,5 +123,18 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public void deleteById(Integer userId) {
         sysUserMapper.deleteById(userId);
+    }
+
+    //为用户保存分配的角色
+
+    @Override
+    public void doAssign(AssginRoleDto assginRoleDto) {
+        //根据userID 删除之前分配过的角色
+        sysRoleUserMapper.deleteByUserId(assginRoleDto.getUserId());
+        //重新分配角色
+        List<Long> roleIdList = assginRoleDto.getRoleIdList();
+        for (Long roleId:roleIdList) {
+            sysRoleUserMapper.doAssign(assginRoleDto.getUserId(),roleId);
+        }
     }
 }
