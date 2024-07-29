@@ -14,7 +14,7 @@
         <module>spzx-manager</module>
     </modules>
 
-    <!-- 指定父工程 -->
+    <!-- 1111 -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
